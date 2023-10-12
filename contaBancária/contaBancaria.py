@@ -2,6 +2,7 @@ class ContaBancaria:
     def __init__(self, balance, owner):
         self.__balance = balance
         self.__owner = owner
+        self.historico = []
 
     @property
     def balance(self):
@@ -20,17 +21,25 @@ class ContaBancaria:
         del self.__owner
 
     def depositar(self, qtd_deposito):
-        total = self.__balance
-        total += qtd_deposito
-        return print(f"Depositou {qtd_deposito}€.")
+        if qtd_deposito > 0:
+            total = self.__balance
+            total += qtd_deposito
+            mensagem = f"Depositou {qtd_deposito}€ com sucesso. \n"
+            self.historico.append(mensagem)
+            return mensagem
+        else:
+            return "Valor inválido!"
 
     def levantar(self, qtd_levantamento):
-        total = self.__balance
-        if total < qtd_levantamento:
-            print("Não tem saldo suficiente...")
+        if 0 < qtd_levantamento <= self.balance:
+            self.__balance -= qtd_levantamento
+            mensagem = f"Levantou {qtd_levantamento}€ com sucesso. \n"
+            self.historico.append(mensagem)
+            return mensagem
         else:
-            total -= qtd_levantamento
-        return print(f"Levantou {qtd_levantamento}€.")
+            return "Saldo insuficiente ou valor inválido!"
 
     def check_balance(self):
-        return self.__balance
+        mensagem = f"Atualmente tem: {self.__balance}€ \n"
+        self.historico.append(mensagem)
+        return mensagem
